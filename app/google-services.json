@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "664499232895",
+    "firebase_url": "https://nutriplay-f46c3.firebaseio.com",
+    "project_id": "nutriplay-f46c3",
+    "storage_bucket": "nutriplay-f46c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664499232895:android:7fdf93526f0afb88",
+        "android_client_info": {
+          "package_name": "com.tecsup.nutriplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664499232895-rclsvt08mppe675tv0h6d4a6isialq1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tecsup.nutriplay",
+            "certificate_hash": "d127c87d2a552361cc2b6742340d601cc6fdd38a"
+          }
+        },
+        {
+          "client_id": "664499232895-uemsj5sifl9oujue32bkh3mdrq0ra2e7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdVXG_xG0V5t883vKxjvFArOkTLTN66jc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664499232895-uemsj5sifl9oujue32bkh3mdrq0ra2e7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

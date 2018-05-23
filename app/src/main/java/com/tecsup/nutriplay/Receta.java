@@ -6,6 +6,9 @@ public class Receta {
     private String descripcion;
     private String imagen;
 
+    public Receta(){
+
+    }
     public Receta(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
