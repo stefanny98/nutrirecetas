@@ -32,31 +32,53 @@ public class MisRecetasFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_mis_recetas, container, false);
 
         misrecetasList = (RecyclerView) view.findViewById(R.id.recetasLista);
-        // Get a reference to our posts
-
-// ...
+        final String id_usu = "1";
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //Firebase ref = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/fireblog/posts");
-        // Attach an listener to read the data at our posts reference
         mDatabase.child("receta").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        // Result will be holded Here
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                            Receta receta = dsp.getValue(Receta.class);
-                            recetas.add(receta); //add result into array list
-                            Log.d("receta", receta.getTitulo());
+                        for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                            mDatabase.child("coleccion").child(id_usu).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                        boolean estado = dsp.getValue(Boolean.class);
+
+                                        if (estado == true){
+                                            String id_receta = dsp.getKey();
+                                            if (ds.getKey().equals(id_receta)) {
+                                                Receta receta = ds.getValue(Receta.class);
+                                                receta.setId(ds.getKey());
+                                                recetas.add(receta);
+                                                ListAdapter adapter = new ListAdapter();
+                                                adapter.setRecetas(recetas);
+                                                misrecetasList.setAdapter(adapter);
+                                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                                misrecetasList.setLayoutManager(layoutManager);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                          //  Log.d("id_re", ds.getKey());
+
                         }
+
+                        /*
                         ListAdapter adapter = new ListAdapter();
 
-                        recetas.add(new Receta("Pollo con Verduras", "Descripcionn"));
+                       // recetas.add(new Receta("Pollo con Verduras", "Descripcionn"));
                         adapter.setRecetas(recetas);
 
                         misrecetasList.setAdapter(adapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                        misrecetasList.setLayoutManager(layoutManager);
+                        misrecetasList.setLayoutManager(layoutManager);*/
                       //  Receta receta = dataSnapshot.getValue(Receta.class);
 
                     }

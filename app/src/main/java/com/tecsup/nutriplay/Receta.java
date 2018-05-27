@@ -2,6 +2,7 @@ package com.tecsup.nutriplay;
 
 public class Receta {
 
+    private String id;
     private String titulo;
     private String descripcion;
     private String imagen;
@@ -12,6 +13,14 @@ public class Receta {
     public Receta(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitulo() {

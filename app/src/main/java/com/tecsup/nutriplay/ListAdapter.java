@@ -59,7 +59,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             public void onClick(View view) {
                 Intent i1 = new Intent(view.getContext(), DetalleRecetaActivity.class);
                // i1.putExtra("id", receta.getTitulo());
-                view.getContext().startActivity(i1);
             }
         });
     }
