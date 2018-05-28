@@ -105,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void goToJuego(View view) {
-        Log.d("Modulo", "Yendo a Juego");
+        Intent i1 = new Intent(this, JuegoActivity.class);
+        startActivity(i1);
     }
 }
