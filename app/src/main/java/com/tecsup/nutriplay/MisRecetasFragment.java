@@ -1,5 +1,6 @@
 package com.tecsup.nutriplay;
 
+import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ public class MisRecetasFragment extends Fragment {
     private RecyclerView misrecetasList;
     private DatabaseReference mDatabase;
     private  List<Receta> recetas = new ArrayList<>();
+    private  ProgressDialog progress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,6 +35,13 @@ public class MisRecetasFragment extends Fragment {
 
         misrecetasList = (RecyclerView) view.findViewById(R.id.recetasLista);
         final String id_usu = "1";
+
+        progress = new ProgressDialog(getContext());
+        progress.setTitle("Cargando");
+        progress.setMessage("Por favor espere...");
+        progress.setCancelable(false);
+        progress.show();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("receta").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -52,10 +61,12 @@ public class MisRecetasFragment extends Fragment {
                                                 receta.setId(ds.getKey());
                                                 recetas.add(receta);
                                                 ListAdapter adapter = new ListAdapter();
-                                                adapter.setRecetas(recetas);
+                                                adapter.setRecetas(recetas, getContext());
                                                 misrecetasList.setAdapter(adapter);
                                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                                                 misrecetasList.setLayoutManager(layoutManager);
+                                                // To dismiss the dialog
+                                                progress.dismiss();
                                             }
                                         }
                                     }

@@ -54,12 +54,10 @@ public class JuegoActivity extends AppCompatActivity {
            @Override
            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-              // String a = adapterView.getItemAtPosition(i).toString();
-              // String b = content.get(i);
-               //Log.d("adapter", a);
                Intent intent = new Intent(JuegoActivity.this, DetalleJuegoActivity.class);
                 intent.putExtra("titulo", content.get(i));
                 startActivity(intent);
+                finish();
 
            }
        });

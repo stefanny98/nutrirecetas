@@ -1,5 +1,6 @@
 package com.tecsup.nutriplay;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -24,12 +25,15 @@ public class TiendaAdapter extends RecyclerView.Adapter<TiendaAdapter.ViewHolder
 
     private List<Receta> recetas;
     private DatabaseReference mDatabase;
+    private TiendaAdapter adapter;
     public TiendaAdapter(){
         this.recetas = new ArrayList<>();
+        this.adapter = this;
     }
     public void setRecetas(List<Receta> recetas) {
         this.recetas = recetas;
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView picture;
@@ -72,6 +76,8 @@ public class TiendaAdapter extends RecyclerView.Adapter<TiendaAdapter.ViewHolder
                             if (dsp.getKey().equals(id_receta)){
                                 Log.d("Compra", "Agregando receta " + dsp.getKey() + " a Mis Recetas");
                                 dsp.getRef().setValue(true);
+                                ((Activity)view.getContext()).finish();
+                                view.getContext().startActivity(((Activity)view.getContext()).getIntent());
 
                             }
 

@@ -1,7 +1,9 @@
 package com.tecsup.nutriplay;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +19,10 @@ public class DetalleJuegoActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private boolean estado;
     private TextView pregunta;
+    private String descripcion;
+    private CardView cardVerdad, cardFalso;
+    private String acierto = "Acertaste!";
+    private String fallo = "Fallaste!";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +30,8 @@ public class DetalleJuegoActivity extends AppCompatActivity {
 
        final String titulo =  getIntent().getExtras().getString("titulo");
 
+       cardVerdad = findViewById(R.id.cardVerdad);
+       cardFalso = findViewById(R.id.cardFalso);
         pregunta = findViewById(R.id.preguntaText);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -31,6 +39,7 @@ public class DetalleJuegoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                     descripcion = ds.child("respuesta").getValue(String.class);
                     if (titulo.equals(ds.child("titulo").getValue(String.class))) {
                         estado = ds.child("verdad").getValue(Boolean.class);
                         pregunta.setText(ds.child("pregunta").getValue(String.class));
@@ -46,18 +55,28 @@ public class DetalleJuegoActivity extends AppCompatActivity {
     }
 
     public void verdadTapped(View view) {
+        ViewDialog alert = new ViewDialog();
         if(estado){
             Log.d("Respuesta:", "Respuesta correcta");
+            cardVerdad.setCardBackgroundColor(Color.GREEN);
+            alert.showDialog(DetalleJuegoActivity.this, descripcion, acierto);
         }else{
             Log.d("Respuesta:", "Respuesta incorrecta");
+            cardVerdad.setCardBackgroundColor(Color.RED);
+            alert.showDialog(DetalleJuegoActivity.this, descripcion, fallo);
         }
     }
 
     public void falsoTapped(View view) {
+        ViewDialog alert = new ViewDialog();
         if(!estado){
             Log.d("Respuesta:", "Respuesta correcta");
+            cardFalso.setCardBackgroundColor(Color.GREEN);
+            alert.showDialog(DetalleJuegoActivity.this, descripcion, acierto);
         }else{
             Log.d("Respuesta:", "Respuesta incorrecta");
+            cardFalso.setCardBackgroundColor(Color.RED);
+            alert.showDialog(DetalleJuegoActivity.this, descripcion, fallo);
         }
     }
 }

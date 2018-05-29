@@ -49,7 +49,7 @@
             android:layout_below="@+id/titulo_text"
             android:layout_alignBottom="@+id/picture_image"
             android:layout_alignEnd="@+id/titulo_text"
-            android:drawableLeft="@drawable/coin_icon"
+            android:drawableLeft="@drawable/ic_coin"
             android:textSize="20dp"
             android:text="20" />
 

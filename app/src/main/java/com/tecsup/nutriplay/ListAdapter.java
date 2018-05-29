@@ -1,5 +1,6 @@
 package com.tecsup.nutriplay;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,24 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<Receta> recetas;
-
+    private Context context;
+    public ImageView picture;
     public ListAdapter(){
         this.recetas = new ArrayList<>();
     }
-    public void setRecetas(List<Receta> recetas) {
+    public void setRecetas(List<Receta> recetas, Context context) {
         this.recetas = recetas;
+        this.context = context;
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView picture;
+
         public TextView titulo;
         public TextView descripcion;
 
@@ -45,15 +49,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ListAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
       final Receta receta = this.recetas.get(position);
         viewHolder.titulo.setText(receta.getTitulo());
         viewHolder.descripcion.setText(receta.getDescripcion());
-/*
-        Context context = viewHolder.itemView.getContext();
-        int idRes = context.getResources().getIdentifier(receta.getPicture(), "drawable", context.getPackageName());
-        viewHolder.picture.setImageResource(idRes);
-*/
+       // FirebaseStorage storage;
+    //    Context context = viewHolder.itemView.getContext();
+ //       int idRes = context.getResources().getIdentifier(receta.getPicture(), "drawable", context.getPackageName());
+//        viewHolder.picture.setImageResource(idRes);
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
