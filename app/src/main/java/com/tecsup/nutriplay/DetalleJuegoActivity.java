@@ -1,5 +1,7 @@
 package com.tecsup.nutriplay;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +22,10 @@ public class DetalleJuegoActivity extends AppCompatActivity {
     private boolean estado;
     private TextView pregunta;
     private String descripcion;
+    private String juego_id;
     private CardView cardVerdad, cardFalso;
-    private String acierto = "Acertaste!";
-    private String fallo = "Fallaste!";
+    private String acierto = "¡Acertaste!";
+    private String fallo = "¡Fallaste!";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +42,10 @@ public class DetalleJuegoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                     descripcion = ds.child("respuesta").getValue(String.class);
                     if (titulo.equals(ds.child("titulo").getValue(String.class))) {
-                        estado = ds.child("verdad").getValue(Boolean.class);
+                        juego_id = ds.getKey();
+                        descripcion = ds.child("respuesta").getValue(String.class);
+                        estado = ds.child("estado").getValue(Boolean.class);
                         pregunta.setText(ds.child("pregunta").getValue(String.class));
                     }
                 }
@@ -65,6 +69,7 @@ public class DetalleJuegoActivity extends AppCompatActivity {
             cardVerdad.setCardBackgroundColor(Color.RED);
             alert.showDialog(DetalleJuegoActivity.this, descripcion, fallo);
         }
+        borrarJuego();
     }
 
     public void falsoTapped(View view) {
@@ -78,5 +83,28 @@ public class DetalleJuegoActivity extends AppCompatActivity {
             cardFalso.setCardBackgroundColor(Color.RED);
             alert.showDialog(DetalleJuegoActivity.this, descripcion, fallo);
         }
+        borrarJuego();
+    }
+
+    public void borrarJuego(){
+        final String id_usu = "1";
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("coleccion_juego").child(id_usu).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    if (dsp.getKey().equals(juego_id)){
+                        Log.d("Eliminar", "Eliminando juego " + dsp.getKey() + "de los mitos");
+                        dsp.getRef().setValue(false);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -1,5 +1,6 @@
 package com.tecsup.nutriplay;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,22 +25,48 @@ public class JuegoActivity extends AppCompatActivity {
     private String pregunta_id;
     private ArrayList<String> content = new ArrayList<>();
     private int n = 0;
+    ProgressDialog progress;
+    final String id_usu = "1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juego);
 
         listView = findViewById(R.id.listView);
-
+        progress = new ProgressDialog(this);
+        progress.setTitle("Cargando");
+        progress.setMessage("Por favor espere...");
+        progress.setCancelable(false);
+        progress.show();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("juego").addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
-                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                     content.add(ds.child("titulo").getValue(String.class));
-                     Log.d("Array", content.toString());
-                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(JuegoActivity.this, android.R.layout.simple_list_item_1, content);
-                     listView.setAdapter(adapter);
+
+                 for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                     mDatabase.child("coleccion_juego").child(id_usu).addListenerForSingleValueEvent(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(DataSnapshot dataSnapshot) {
+                             for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                                 boolean estado = dsp.getValue(Boolean.class);
+                                 if (estado == true) {
+                                     String id_juego = dsp.getKey();
+                                     if (ds.getKey().equals(id_juego)) {
+                                         content.add(ds.child("titulo").getValue(String.class));
+                                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(JuegoActivity.this, android.R.layout.simple_list_item_1, content);
+                                         listView.setAdapter(adapter);
+                                     }
+                                 }
+                             }
+                             progress.dismiss();
+                         }
+
+                         @Override
+                         public void onCancelled(DatabaseError databaseError) {
+
+                         }
+                     });
+                     //  Log.d("id_re", ds.getKey());
                  }
              }
 

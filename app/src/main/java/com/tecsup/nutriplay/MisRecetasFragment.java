@@ -65,11 +65,11 @@ public class MisRecetasFragment extends Fragment {
                                                 misrecetasList.setAdapter(adapter);
                                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                                                 misrecetasList.setLayoutManager(layoutManager);
-                                                // To dismiss the dialog
-                                                progress.dismiss();
+
                                             }
                                         }
                                     }
+                                    progress.dismiss();
                                 }
 
                                 @Override
